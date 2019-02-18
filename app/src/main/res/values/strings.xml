@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="txt_tv_title">Title:</string>
+    <string name="txt_tb_description">Description:</string>
+    <string name="txt_menu_search">Search</string>
+    <string name="txt_menu_add">Add</string>
+    <string name="txt_et_description">Write your note here</string>
+    <string name="txt_et_title">Write your title here</string>
+</resources>
