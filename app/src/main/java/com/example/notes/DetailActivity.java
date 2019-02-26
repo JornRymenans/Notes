@@ -1,22 +1,20 @@
 package com.example.notes;
 
+import android.arch.persistence.room.TypeConverters;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.notes.model.Converter;
 import com.example.notes.model.Note;
-import com.example.notes.model.NotesDao;
+import com.example.notes.model.NotesDatabase;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -40,9 +38,9 @@ public class DetailActivity extends AppCompatActivity {
             String noteTitle = etTitle.getText().toString();
             String noteDescription = etDescription.getText().toString();
 
-            Note newNote = new Note(noteTitle, noteDescription);
+            Note newNote = new Note(noteTitle, noteDescription, new Date());
 
-            NotesDao.getInstance().addNote(newNote);
+            NotesDatabase.getInstance(getApplicationContext()).getNotesDao().insertNote(newNote);
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

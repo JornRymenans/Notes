@@ -1,12 +1,20 @@
 package com.example.notes.model;
 
 import android.app.DatePickerDialog;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Note {
+@Entity
+public class Note implements Serializable {
 
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String title, description;
     private Date date;
 
@@ -14,11 +22,20 @@ public class Note {
     public Note() {
     }
 
-    public Note(String title, String description) {
+    @Ignore
+    public Note(String title, String description, Date date) {
         this.title = title;
         this.description = description;
-        this.date = Calendar.getInstance().getTime();
+        this.date = date;
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {

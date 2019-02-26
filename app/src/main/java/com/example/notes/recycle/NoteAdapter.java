@@ -10,12 +10,15 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import com.example.notes.R;
+import com.example.notes.model.Converter;
 import com.example.notes.model.Note;
-import com.example.notes.model.NotesDao;
+import com.example.notes.model.NotesDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
@@ -33,12 +36,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     }
 
-    private ArrayList<Note> notes, gefilterdeNotes;
+    private List<Note> notes, gefilterdeNotes;
+    private Context context;
 
 
-    public NoteAdapter (ArrayList<Note> notes){
+    public NoteAdapter (List<Note> notes , Context context){
         this.notes = notes;
         this.gefilterdeNotes = notes;
+        this.context = context;
     }
 
     @NonNull
@@ -51,16 +56,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, int i) {
-        Note noteForRow = notes.get(i);
+        Note noteForRow = gefilterdeNotes.get(i);
         noteViewHolder.tvTitle.setText(noteForRow.getTitle());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        String dateAsString = sdf.format(NotesDao.getInstance().getNotes().get(i).getDate());
+        String dateAsString = Converter.stringFromDate(noteForRow.getDate());
         noteViewHolder.tvDate.setText(dateAsString);
     }
 
     @Override
     public int getItemCount() {
         return gefilterdeNotes.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return gefilterdeNotes.get(position).getId();
+    }
+
+    public void remove(int position){
+        gefilterdeNotes.remove(position);
+
     }
 
     public Filter getFilter(){

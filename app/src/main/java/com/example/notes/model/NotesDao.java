@@ -1,35 +1,25 @@
 package com.example.notes.model;
 
-import java.util.ArrayList;
-import java.util.Date;
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
 
-public class NotesDao {
+import java.util.List;
 
-    private static final NotesDao ourInstance = new NotesDao();
-    private ArrayList<Note> notes = new ArrayList<>();
+@Dao
+public interface NotesDao {
 
-    public static NotesDao getInstance() {
-        return ourInstance;
-    }
+    @Insert
+    void insertNote(Note note);
 
+    @Delete
+    void deleteNote(Note note);
 
+    @Query("SELECT * FROM Note")
+    List<Note> selectAllNotes();
 
-    private NotesDao() {
-        notes.add(new Note("Test Note", "Omschrijving over tests"));
-        notes.add(new Note("Test 2", "Nog eens uitleg over tests"));
-    }
-
-    public ArrayList<Note> getNotes() {
-        return notes;
-    }
-
-    public void addNote(Note note){
-        notes.add(note);
-    }
-
-    public void removeNotes(Note note){
-        notes.remove(note);
-    }
-
+    @Query("SELECT * FROM Note WHERE id = :id")
+    Note selectNoteById(long id);
 
 }
