@@ -21,9 +21,7 @@ import com.example.notes.model.NotesDatabase;
 import com.example.notes.recycle.NoteAdapter;
 import com.example.notes.recycle.RecycleTouchListener;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener fabAddListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+            Intent intent = new Intent(getApplicationContext(), NewNoteActivity.class);
             startActivity(intent);
         }
     };
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add){
-            Intent intent = new Intent( this, DetailActivity.class);
+            Intent intent = new Intent( this, NewNoteActivity.class);
             startActivity(intent);
         }
 
@@ -105,13 +103,13 @@ public class MainActivity extends AppCompatActivity {
         rvNote.addOnItemTouchListener(new RecycleTouchListener(this, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Note selectedNote = NotesDatabase.getInstance(getApplicationContext()).getNotesDao().selectNoteById(position);
+                long id = adapter.getItemId(position);
+                Note selectedNote = NotesDatabase.getInstance(getApplicationContext()).getNotesDao().selectNoteById(id);
                 String dateAsString = Converter.stringFromDate(selectedNote.getDate());
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("title", selectedNote.getTitle());
                 intent.putExtra("description", selectedNote.getDescription());
                 intent.putExtra("date", dateAsString );
-               // intent.putExtra("note",NotesDatabase.getInstance().getNotes().get(position) );
                 startActivity(intent);
             }
         }));
